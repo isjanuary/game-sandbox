@@ -3,8 +3,6 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import routes from './routers'
 
-console.log(routes)
-
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
