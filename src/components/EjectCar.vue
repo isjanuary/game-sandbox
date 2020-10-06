@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .top-right-corner {
   position: absolute;
   top: 20px;
