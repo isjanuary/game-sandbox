@@ -5,16 +5,20 @@
     <div class="content-wrapper">
       <div
         class="game-area-ref game-bg"
-        @dragover="handleDragOver"
-        @drop="handleDrop"
       >
+        <!-- <div
+          class="car"
+          draggable
+          @dragstart="handleDragStart"
+          @dragend="handleDragEnd"
+          @touchstart="startTouch"
+          @touchmove="moveTouch"
+          @touchend="endTouch"
+        > -->
         <div
           class="car"
           draggable
-          @click="handleClickCar"
-          @dragstart="handleDragStart"
-          @drag="handleDragging"
-          @dragend="handleDragEnd"
+          @mousedown="handleMouseDown"
           @touchstart="startTouch"
           @touchmove="moveTouch"
           @touchend="endTouch"
@@ -61,14 +65,6 @@ export default {
       this.start.clientY = evt.clientY
       this.start.timestamp = Date.now()
     },
-    handleDragging() {
-      // console.log('evt: ', evt)
-      // if (this.timeout) return
-      // this.timeout = setTimeout(() => {
-      //   clearTimeout(this.timeout)
-      //   this.timeout = null
-      // }, 100)
-    },
     handleDragEnd(evt) {
       clearTimeout(this.timeout)
       this.timeout = null
@@ -110,6 +106,79 @@ export default {
     handleDrop(evt) {
       console.log('on drop: ', evt)
       evt.preventDefault()
+    },
+    startTouch(evt) {
+      console.log('start touch: ', evt)
+      const el = document.getElementById('car')
+      let startX = evt.touches[0].clientX
+      let startY = evt.touches[0].clientY
+      let left = el.offsetLeft
+      let top = el.offsetTop
+      console.log(left, top)
+      // TODO: use requestAnimationFrame here
+      // const move = evt => {
+      //   if (this.timeout) return
+      //   this.timeout = setTimeout(() => {
+      //     console.log('come in move:', evt.clientX, evt.clientY)
+      //     clearTimeout(this.timeout)
+      //     this.timeout = null
+      //     const X = evt.clientX - startX
+      //     const Y = evt.clientY - startY
+      //     el.style.left = `${left + X}px`
+      //     el.style.top = `${top + Y}px`
+      //   }, 16)
+      // }
+      // document.addEventListener('mousemove', move)
+      // el.addEventListener('mouseup', () => {
+      //   console.log('on mouse up: ')
+      //   document.removeEventListener('mousemove', move)
+      //   el.onmouseup = null
+      // })
+
+      // // 如果不设置这段代码，会发生奇怪的现象，这是因为浏览器有自己的对图片和一些其他元素的拖放处理，会在我们拖放
+      // // 时自动运行，这与我们的拖放处理产生了冲突
+      // // ref: https://juejin.im/post/6844904158273765384
+      // el.ondragstart = function() {
+      //   return false
+      // }
+    },
+    moveTouch() {
+    },
+    endTouch(evt) {
+      console.log('end touch: ', evt)
+    },
+    handleMouseDown(evt) {
+      const el = document.getElementById('car')
+      let startX = evt.clientX
+      let startY = evt.clientY
+      let left = el.offsetLeft
+      let top = el.offsetTop
+      // TODO: use requestAnimationFrame here
+      const move = evt => {
+        if (this.timeout) return
+        this.timeout = setTimeout(() => {
+          console.log('come in move:', evt.clientX, evt.clientY)
+          clearTimeout(this.timeout)
+          this.timeout = null
+          const X = evt.clientX - startX
+          const Y = evt.clientY - startY
+          el.style.left = `${left + X}px`
+          el.style.top = `${top + Y}px`
+        }, 16)
+      }
+      document.addEventListener('mousemove', move)
+      el.addEventListener('mouseup', () => {
+        console.log('on mouse up: ')
+        document.removeEventListener('mousemove', move)
+        el.onmouseup = null
+      })
+
+      // 如果不设置这段代码，会发生奇怪的现象，这是因为浏览器有自己的对图片和一些其他元素的拖放处理，会在我们拖放
+      // 时自动运行，这与我们的拖放处理产生了冲突
+      // ref: https://juejin.im/post/6844904158273765384
+      el.ondragstart = function() {
+        return false
+      }
     }
   },
   mounted() {
