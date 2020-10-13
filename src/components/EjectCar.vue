@@ -6,6 +6,7 @@
       <div
         class="game-area-ref game-bg"
       >
+        <div class="energy-bar"></div>
         <!-- <div
           class="car"
           draggable
@@ -119,13 +120,16 @@ export default {
       const move = evt => {
         if (this.timeout) return
         this.timeout = setTimeout(() => {
-          console.log('come in move:', evt.touches[0].clientX, evt.touches[0].clientY)
           clearTimeout(this.timeout)
           this.timeout = null
-          // const X = evt.touches[0].clientX - startX
-          const Y = evt.touches[0].clientY - startY
-          // el.style.left = `${left + X}px`
-          el.style.top = `${top + Y}px`
+          // const deltaX = evt.touches[0].clientX - startX
+          let deltaY = evt.touches[0].clientY - startY
+          console.log('come in move:', evt.touches[0].clientY, startY, deltaY, el.offsetTop)
+          if (deltaY < 0) {
+            deltaY = 0
+          }
+          // el.style.left = `${left + deltaX}px`
+          el.style.top = `${top + deltaY}px`
         }, 16)
       }
       document.addEventListener('touchmove', move)
@@ -228,6 +232,14 @@ export default {
     transform: translateX(-50%);
     height: 51px;
     width: 34px;
+  }
+  .energy-bar {
+    width: 10px;
+    height: 300px;
+    position: absolute;
+    left: 50px;
+    top: 130px;
+    background: linear-gradient(#FFBB00, #ddebad);
   }
 }
 .game-area-ref img {
