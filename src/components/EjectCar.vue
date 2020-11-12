@@ -256,7 +256,7 @@ export default {
   display: flex;
 }
 
-@media screen and (min-width: 576px) {
+@media screen and (min-width: 577px) {
   .content-wrapper {
     display: flex;
   }
